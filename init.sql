@@ -75,12 +75,12 @@ ON CONFLICT (name, _sport_id) DO NOTHING;
 INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id, home_score, away_score, description) VALUES
 ('2025-10-01 19:00:00 UTC', 1, 1, 2, 1, 2, 2, 'Champions League, group stage.');
 
-INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id, description) VALUES
+INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id) VALUES
 ('2025-12-10 20:00:00 UTC', 1, 3, 1, 3),
 ('2025-12-15 17:30:00 UTC', 1, 2, 3, 2);
 
 
-INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id, home_score, away_score, description) VALUES
+INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id, home_score, away_score) VALUES
 ('2025-10-05 18:00:00 UTC', 2, 4, 5, 4, 5, 3);
 
 INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id) VALUES
