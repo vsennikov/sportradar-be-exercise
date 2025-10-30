@@ -6,7 +6,7 @@ import (
 )
 
 
-type EventDB struct {
+type eventDBModel struct {
 	ID            int            `db:"id"`
 	EventDatetime time.Time      `db:"event_datetime"`
 	Description   sql.NullString `db:"description"`
