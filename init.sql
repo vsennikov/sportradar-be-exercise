@@ -86,3 +86,22 @@ INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _ve
 INSERT INTO events (event_datetime, _sport_id, _home_team_id, _away_team_id, _venue_id) VALUES
 ('2025-12-12 19:30:00 UTC', 2, 5, 6, 5),
 ('2025-12-18 20:15:00 UTC', 2, 6, 4, 6);
+
+-- 47 more events to test pagination
+INSERT INTO events (
+    event_datetime,
+    _sport_id,
+    _home_team_id,
+    _away_team_id,
+    _venue_id,
+    description
+)
+SELECT
+    '2025-12-20 18:00:00 UTC'::timestamptz + (i || ' days')::interval,
+    1,
+    (i % 3) + 1,
+    ((i + 1) % 3) + 1,
+    (i % 3) + 1,
+    'Generated match day ' || i
+FROM
+    generate_series(1, 47) AS i;

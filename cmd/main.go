@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-cfg, err := config.Load()
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Could not load configuration: %v", err)
 	}

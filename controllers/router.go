@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,9 +14,14 @@ func NewRouter(e *EventHandler) *Router {
 
 func(r *Router) InitServer() *gin.Engine{
 	router := gin.Default()
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
-	})
-
+	api := router.Group("/api/v1")
+	{
+		events := api.Group("/events")
+		{
+			events.POST("", r.eventHandler.HandleCreateEvent)
+			events.GET("/:id", r.eventHandler.HandleGetEventByID)
+			events.GET("", r.eventHandler.HandleListEvents)
+		}
+	}
 	return router
 }
