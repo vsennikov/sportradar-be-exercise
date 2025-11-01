@@ -14,6 +14,8 @@ type Config struct {
 	DBUser     string `mapstructure:"db_user"`
 	DBPassword string `mapstructure:"db_password"`
 	DBName     string `mapstructure:"db_name"`
+	DefaultPage  int `mapstructure:"default_page"`
+	DefaultLimit int `mapstructure:"default_limit"`
 }
 
 func Load() (config Config, err error) {
@@ -27,16 +29,16 @@ func Load() (config Config, err error) {
 	v.BindEnv("db_user", "DB_USER")
 	v.BindEnv("db_password", "DB_PASSWORD")
 	v.BindEnv("db_name", "DB_NAME")
+	v.BindEnv("default_page", "DEFAULT_PAGE")
+	v.BindEnv("default_limit", "DEFAULT_LIMIT")
 
 	if err = v.Unmarshal(&config); err != nil {
 		return
 	}
-
 	log.Printf("AppPort: %s", config.AppPort)
 	log.Printf("DBHost: %s", config.DBHost)
 	log.Printf("DBUser: %s", config.DBUser)
 	log.Printf("DBPort: %s", config.DBPort)
 	log.Printf("DBName: %s", config.DBName)
-
 	return
 }

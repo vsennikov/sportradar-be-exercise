@@ -48,3 +48,17 @@ type CreateEventParams struct {
 	HomeTeamID    int
 	AwayTeamID    int
 }
+
+type ListEventsRequest struct {
+	SportID  *int
+	DateFrom *time.Time
+	Page     int
+	Limit    int
+}
+
+type Pagination struct {
+	TotalItems  int `json:"total_items"`
+	TotalPages  int `json:"total_pages"`
+	CurrentPage int `json:"current_page"`
+	PageSize    int `json:"page_size"`
+}
