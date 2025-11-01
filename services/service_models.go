@@ -71,3 +71,7 @@ type EventCreateRequest struct {
 	HomeTeamID    int       `json:"home_team_id" binding:"required"`
 	AwayTeamID    int       `json:"away_team_id" binding:"required"`
 }
+
+type SportRequest struct {
+	Name string `json:"name" binding:"required"`
+}
