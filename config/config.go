@@ -8,7 +8,6 @@ import (
 
 type Config struct {
 	AppPort string `mapstructure:"app_port"`
-
 	DBHost     string `mapstructure:"db_host"`
 	DBPort     string `mapstructure:"db_port"`
 	DBUser     string `mapstructure:"db_user"`
@@ -40,5 +39,7 @@ func Load() (config Config, err error) {
 	log.Printf("DBUser: %s", config.DBUser)
 	log.Printf("DBPort: %s", config.DBPort)
 	log.Printf("DBName: %s", config.DBName)
+	log.Printf("default_page: %d", config.DefaultPage)
+	log.Printf("default_limit: %d", config.DefaultLimit)
 	return
 }
