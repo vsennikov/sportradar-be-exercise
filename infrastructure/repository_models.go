@@ -29,3 +29,8 @@ type eventDBModel struct {
 	AwayTeamName string `db:"at.name"`
 	AwayTeamCity string `db:"at.city"`
 }
+
+type sportDBModel struct {
+	ID	 int	`db:"id"`
+	Name string `db:"name"`
+}

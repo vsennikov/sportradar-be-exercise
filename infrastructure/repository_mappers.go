@@ -55,3 +55,10 @@ func nullInt64ToIntPtr(i sql.NullInt64) *int {
 	}
 	return nil
 }
+
+func toServiceSport(db sportDBModel) services.Sport {
+	return services.Sport{
+		ID: db.ID,
+		Name: db.Name,
+	}
+}
