@@ -13,7 +13,7 @@ type EventRepository struct {
 	db *sqlx.DB
 }
 
-func NewRepository(db *sqlx.DB) *EventRepository {
+func NewEventRepository(db *sqlx.DB) *EventRepository {
 	return &EventRepository{
 		db: db,
 	}
@@ -71,7 +71,7 @@ func (r *EventRepository) CountEvents(ctx context.Context, params services.ListE
 	return total, nil
 }
 
-func (r *EventRepository) ListEvents(ctx context.Context, 
+func (r *EventRepository) ListEvents(ctx context.Context,
 	params services.ListEventsParams) ([]services.Event, error) {
 	var dbModels []eventDBModel
 	var args []interface{}

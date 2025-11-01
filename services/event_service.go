@@ -7,24 +7,28 @@ import (
 	"fmt"
 	"math"
 	"time"
-
-	"github.com/vsennikov/sportradar-be-exercise/controllers"
 )
 
-type EventRepository interface {
+type EventRepositoryInterface interface {
 	GetEventByID(ctx context.Context, id int) (*Event, error)
 	CreateEvent(ctx context.Context, params CreateEventParams) (int, error)
 	CountEvents(ctx context.Context, params ListEventsParams) (int, error)
 	ListEvents(ctx context.Context, params ListEventsParams) ([]Event, error)
 }
 
+type EventServiceInterface interface {
+	GetEventByID(ctx context.Context, id int) (*Event, error)
+	CreateEvent(ctx context.Context, req EventCreateRequest) (int, error)
+	ListEvents(ctx context.Context, req ListEventsRequest) ([]Event, *Pagination, error)
+}
+
 type EventService struct {
-	repository EventRepository
+	repository EventRepositoryInterface
 	defaultPage int
 	defaultLimit int
 }
 
-func NewEventService(repository EventRepository, defaultPage, defaultLimit int) *EventService {
+func NewEventService(repository EventRepositoryInterface, defaultPage, defaultLimit int) *EventService {
     return &EventService{repository: repository, defaultPage: defaultPage, defaultLimit: defaultLimit}
 }
 
@@ -39,7 +43,7 @@ func (s *EventService) GetEventByID(ctx context.Context, id int) (*Event, error)
 	return event, nil
 }
 
-func (s *EventService) CreateEvent(ctx context.Context, req controllers.EventCreateRequest) (int, error) {
+func (s *EventService) CreateEvent(ctx context.Context, req EventCreateRequest) (int, error) {
 	if req.EventDatetime.Before(time.Now()) {
 		return 0, fmt.Errorf("cannot create an event in the past")
 	}

@@ -2,34 +2,22 @@ package main
 
 import (
 	"log"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/vsennikov/sportradar-be-exercise/config"
-	"github.com/vsennikov/sportradar-be-exercise/infrastructure"
 )
 
 func main() {
-	cfg, err := config.Load()
+cfg, err := config.Load()
 	if err != nil {
-    log.Fatalf("Failed to parse configuration: %v", err)
+		log.Fatalf("Could not load configuration: %v", err)
 	}
-
-	db, err := infrastructure.NewConnection(cfg)
+	router, db, err := buildApp(cfg)
 	if err != nil {
-		log.Fatalf("%v", err)
+		log.Fatalf("Could not build application: %v", err)
 	}
-	defer db.Close()
-	
-	r := gin.Default()
-	r.GET("/api", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": "ok",
-		})
-	})
-	log.Printf("Starting server on port %s", cfg.AppPort)
-	r.Run(":" + cfg.AppPort)
-		if err := r.Run(":" + cfg.AppPort); err != nil {
-		log.Fatal(err)
+	defer cleanupFunc(db)
+	log.Printf("Server starting on http://localhost:%s", cfg.AppPort)
+	if err := router.Run(":" + cfg.AppPort); err != nil {
+		log.Fatalf("FATAL: Could not start server: %v", err)
 	}
 }

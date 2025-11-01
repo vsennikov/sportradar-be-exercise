@@ -62,3 +62,12 @@ type Pagination struct {
 	CurrentPage int `json:"current_page"`
 	PageSize    int `json:"page_size"`
 }
+
+type EventCreateRequest struct {
+	EventDatetime time.Time `json:"event_datetime" binding:"required"`
+	Description   *string   `json:"description"`
+	SportID       int       `json:"sport_id" binding:"required"`
+	VenueID       *int      `json:"venue_id"`
+	HomeTeamID    int       `json:"home_team_id" binding:"required"`
+	AwayTeamID    int       `json:"away_team_id" binding:"required"`
+}
