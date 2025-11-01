@@ -32,3 +32,19 @@ type Event struct {
 	HomeTeam Team
 	AwayTeam Team
 }
+
+type ListEventsParams struct {
+	SportID  *int
+	DateFrom *time.Time
+	Limit    int
+	Offset   int
+}
+
+type CreateEventParams struct {
+	EventDatetime time.Time
+	Description   *string
+	SportID       int
+	VenueID       *int
+	HomeTeamID    int
+	AwayTeamID    int
+}

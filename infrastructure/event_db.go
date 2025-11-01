@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/vsennikov/sportradar-be-exercise/services"
@@ -20,22 +19,6 @@ func NewRepository(db *sqlx.DB) *EventRepository {
 	}
 }
 
-type ListEventsParams struct {
-	SportID  *int
-	DateFrom *time.Time
-	Limit    int
-	Offset   int
-}
-
-type CreateEventParams struct {
-	EventDatetime time.Time
-	Description   *string
-	SportID       int
-	VenueID       *int
-	HomeTeamID    int
-	AwayTeamID    int
-}
-
 func (r *EventRepository) GetEventByID(ctx context.Context, id int) (*services.Event, error) {
 	var dbModel eventDBModel
 	query := baseEventSelectQuery + " WHERE e.id = $1"
@@ -47,7 +30,7 @@ func (r *EventRepository) GetEventByID(ctx context.Context, id int) (*services.E
 	return &event, nil
 }
 
-func (r *EventRepository) CreateEvent(ctx context.Context, params CreateEventParams) (int, error) {
+func (r *EventRepository) CreateEvent(ctx context.Context, params services.CreateEventParams) (int, error) {
 	var newID int
 	query := `
 	INSERT INTO events(event_datetime, description, _sport_id, _venue_id, _home_team_id, _away_team_id)
@@ -65,7 +48,7 @@ func (r *EventRepository) CreateEvent(ctx context.Context, params CreateEventPar
 	return newID, nil
 }
 
-func (r *EventRepository) CountEvents(ctx context.Context, params ListEventsParams) (int, error) {
+func (r *EventRepository) CountEvents(ctx context.Context, params services.ListEventsParams) (int, error) {
 	var args []interface{}
 	var total int
 	i := 1
@@ -88,7 +71,8 @@ func (r *EventRepository) CountEvents(ctx context.Context, params ListEventsPara
 	return total, nil
 }
 
-func (r *EventRepository) ListEvents(ctx context.Context, params ListEventsParams) ([]services.Event, error) {
+func (r *EventRepository) ListEvents(ctx context.Context, 
+	params services.ListEventsParams) ([]services.Event, error) {
 	var dbModels []eventDBModel
 	var args []interface{}
 	i := 1
