@@ -14,6 +14,11 @@ func NewRouter(e *EventHandler) *Router {
 
 func(r *Router) InitServer() *gin.Engine{
 	router := gin.Default()
+
+	router.Static("/static", "./static")
+	router.GET("/", func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
 	api := router.Group("/api/v1")
 	{
 		events := api.Group("/events")

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/vsennikov/sportradar-be-exercise/services"
@@ -65,6 +66,14 @@ func (h *EventHandler) HandleListEvents(c *gin.Context) {
 			req.SportID = &sportID
 		}
 	}
+	date_from := c.Query("date_from")
+	if (date_from != "") {
+		parsedTime, err := time.Parse("2006-01-02", date_from)
+		if (err == nil) {
+			req.DateFrom = &parsedTime
+		}
+	}
+
 	events, pagination, err := h.eventService.ListEvents(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

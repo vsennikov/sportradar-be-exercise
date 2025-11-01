@@ -64,7 +64,7 @@ func (r *EventRepository) CountEvents(ctx context.Context, params services.ListE
 		whereQuery = append(whereQuery, fmt.Sprintf("event_datetime >= $%d", i))
 		i++
 	}
-	query := fmt.Sprintf("SELECT COUNT(*) FROM events WHERE %s", strings.Join(whereQuery, " AND "))
+	query := fmt.Sprintf("SELECT COUNT(*) FROM events e WHERE %s", strings.Join(whereQuery, " AND "))
 	if err := r.db.GetContext(ctx, &total, query, args...); err != nil {
 		return 0, err
 	}
