@@ -111,6 +111,43 @@ func (r *EventRepository) ListEvents(ctx context.Context,
 	return events, nil
 }
 
+func (r *EventRepository) UpdateEvent(ctx context.Context, event services.Event) error {
+	query := `
+	UPDATE events SET
+    event_datetime = $1,
+    description = $2,
+    home_score = $3,
+    away_score = $4,
+    _sport_id = $5,
+    _venue_id = $6,
+    _home_team_id = $7,
+    _away_team_id = $8
+	WHERE id = $9`
+	var venueID *int
+
+	if event.Venue.ID != 0 {
+		venueID = &event.Venue.ID
+	}
+	_, err := r.db.ExecContext(ctx, query,
+		event.EventDatetime,
+		event.Description,
+		event.HomeScore,
+		event.AwayScore,
+		event.Sport.ID,
+		venueID,
+		event.HomeTeam.ID,
+		event.AwayTeam.ID,
+		event.ID,
+	)
+	return err
+}
+
+func (r *EventRepository) DeleteEvent(ctx context.Context, id int) error {
+	query := "DELETE FROM events WHERE id = $1"
+	_, err := r.db.ExecContext(ctx, query, id)
+	return err
+}
+
 func (r *EventRepository) CountEventsBySportID(ctx context.Context, sportID int) (int, error) {
 	query := "SELECT COUNT(*) FROM events WHERE _sport_id = $1"
 	var total int

@@ -72,6 +72,17 @@ type EventCreateRequest struct {
 	AwayTeamID    int       `json:"away_team_id" binding:"required"`
 }
 
+type UpdateEventRequest struct {
+	EventDatetime *time.Time `json:"event_datetime"`
+	Description   *string    `json:"description"`
+	HomeScore     *int       `json:"home_score"`
+	AwayScore     *int       `json:"away_score"`
+	SportID       *int       `json:"sport_id"`
+	VenueID       *int       `json:"venue_id"`
+	HomeTeamID    *int       `json:"home_team_id"`
+	AwayTeamID    *int       `json:"away_team_id"`
+}
+
 type SportRequest struct {
 	Name string `json:"name" binding:"required"`
 }

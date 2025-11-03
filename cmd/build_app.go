@@ -36,6 +36,9 @@ func buildApp(cfg config.Config) (*gin.Engine, *sqlx.DB, error) {
 		eventRepository,
 		cfg.DefaultPage,
 		cfg.DefaultLimit,
+		sportRepository,
+		teamRepository,
+		venueRepository,
 	)
 	sportService := services.NewSportService(
 		sportRepository,

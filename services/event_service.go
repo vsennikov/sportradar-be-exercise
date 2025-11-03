@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"database/sql"
-	"errors"
 	"fmt"
 	"math"
 	"time"
@@ -17,30 +15,41 @@ type EventRepositoryInterface interface {
 	CountEventsBySportID(ctx context.Context, sportID int) (int, error)
 	CountEventsByVenueId(ctx context.Context, venueID int) (int, error)
 	CountEventsByTeamID(ctx context.Context, teamID int) (int, error)
+	UpdateEvent(ctx context.Context, event Event) error
+	DeleteEvent(ctx context.Context, id int) error
 }
 
 type EventServiceInterface interface {
 	GetEventByID(ctx context.Context, id int) (*Event, error)
 	CreateEvent(ctx context.Context, req EventCreateRequest) (int, error)
 	ListEvents(ctx context.Context, req ListEventsRequest) ([]Event, *Pagination, error)
+	UpdateEvent(ctx context.Context, id int, req UpdateEventRequest) error
+	DeleteEvent(ctx context.Context, id int) error
 }
 
 type EventService struct {
-	repository   EventRepositoryInterface
+	eventRepository   EventRepositoryInterface
 	defaultPage  int
 	defaultLimit int
+	sportRepository SportRepositoryInterface
+	teamRepository TeamRepositoryInterface
+	venueRepository VenueRepositoryInterface
 }
 
-func NewEventService(repository EventRepositoryInterface, defaultPage, defaultLimit int) *EventService {
-	return &EventService{repository: repository, defaultPage: defaultPage, defaultLimit: defaultLimit}
+func NewEventService(r EventRepositoryInterface, dP, dL int,
+	 s SportRepositoryInterface, t TeamRepositoryInterface, v VenueRepositoryInterface) *EventService {
+	return &EventService{
+		eventRepository: r,
+		defaultPage: dP,
+		defaultLimit: dL,
+		sportRepository: s,
+		teamRepository: t,
+		venueRepository: v,}
 }
 
 func (s *EventService) GetEventByID(ctx context.Context, id int) (*Event, error) {
-	event, err := s.repository.GetEventByID(ctx, id)
+	event, err := s.eventRepository.GetEventByID(ctx, id)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("event with id %d not found", id)
-		}
 		return nil, fmt.Errorf("database error while fetching event: %w", err)
 	}
 	return event, nil
@@ -51,7 +60,7 @@ func (s *EventService) CreateEvent(ctx context.Context, req EventCreateRequest) 
 		return 0, fmt.Errorf("cannot create an event in the past")
 	}
 	params := CreateEventParams(req)
-	newID, err := s.repository.CreateEvent(ctx, params)
+	newID, err := s.eventRepository.CreateEvent(ctx, params)
 	if err != nil {
 		return 0, fmt.Errorf("failed to create event: %w", err)
 	}
@@ -72,7 +81,7 @@ func (s *EventService) ListEvents(ctx context.Context, req ListEventsRequest) ([
 		Limit:    req.Limit,
 		Offset:   offset,
 	}
-	totalItems, err := s.repository.CountEvents(ctx, repoParams)
+	totalItems, err := s.eventRepository.CountEvents(ctx, repoParams)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to count events: %w", err)
 	}
@@ -85,7 +94,7 @@ func (s *EventService) ListEvents(ctx context.Context, req ListEventsRequest) ([
 		}
 		return []Event{}, pagination, nil
 	}
-	events, err := s.repository.ListEvents(ctx, repoParams)
+	events, err := s.eventRepository.ListEvents(ctx, repoParams)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to list events: %w", err)
 	}
@@ -97,4 +106,68 @@ func (s *EventService) ListEvents(ctx context.Context, req ListEventsRequest) ([
 		PageSize:    req.Limit,
 	}
 	return events, pagination, nil
+}
+
+func (s *EventService) UpdateEvent(ctx context.Context, id int, req UpdateEventRequest) error {
+	existingEvent, err := s.eventRepository.GetEventByID(ctx, id)
+	if err != nil {
+		return fmt.Errorf("database error: %w", err)
+	}
+	if req.EventDatetime != nil {
+		existingEvent.EventDatetime = *req.EventDatetime
+	}
+	if req.Description != nil {
+		existingEvent.Description = req.Description
+	}
+	if req.HomeScore != nil {
+		existingEvent.HomeScore = req.HomeScore
+	}
+	if req.AwayScore != nil {
+		existingEvent.AwayScore = req.AwayScore
+	}
+	if req.SportID != nil {
+		sport, err := s.sportRepository.GetSportById(ctx, *req.SportID)
+		if err != nil {
+			return fmt.Errorf("validation error: sport with id %d not found", *req.SportID)
+		}
+		existingEvent.Sport = *sport
+	}
+	if req.VenueID != nil {
+		venue, err := s.venueRepository.GetVenueById(ctx, *req.VenueID)
+		if err != nil {
+			return fmt.Errorf("validation error: venue with id %d not found", *req.VenueID)
+		}
+		existingEvent.Venue = *venue
+	}
+	if req.HomeTeamID != nil {
+		team, err := s.teamRepository.GetTeamByID(ctx, *req.HomeTeamID)
+		if err != nil {
+			return fmt.Errorf("validation error: home team with id %d not found", *req.HomeTeamID)
+		}
+		existingEvent.HomeTeam = *team
+	}
+	if req.AwayTeamID != nil {
+				team, err := s.teamRepository.GetTeamByID(ctx, *req.AwayTeamID)
+		if err != nil {
+			return fmt.Errorf("validation error: away team with id %d not found", *req.AwayTeamID)
+		}
+		existingEvent.AwayTeam = *team
+	}
+	err = s.eventRepository.UpdateEvent(ctx, *existingEvent)
+	if err != nil {
+		return fmt.Errorf("failed to update event: %w", err)
+	}
+	return nil
+}
+
+func (s *EventService) DeleteEvent(ctx context.Context, id int) error {
+	_, err := s.eventRepository.GetEventByID(ctx, id)
+	if err != nil {
+		return fmt.Errorf("database error: %w", err)
+	}
+	err = s.eventRepository.DeleteEvent(ctx, id)
+	if err != nil {
+		return fmt.Errorf("failed to delete event: %w", err)
+	}
+	return nil
 }

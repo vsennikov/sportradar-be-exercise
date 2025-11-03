@@ -88,3 +88,39 @@ func (h *EventHandler) HandleListEvents(c *gin.Context) {
 		"events":     eventDTOs,
 	})
 }
+
+func (h *EventHandler) HandleUpdateEvent(c *gin.Context) {
+	var req services.UpdateEventRequest
+	
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid event ID format"})
+		return
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err = h.eventService.UpdateEvent(c.Request.Context(), id, req)
+	if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.Status(http.StatusOK)
+}
+
+func (h *EventHandler) HandleDeleteEvent(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid event ID format"})
+		return
+	}
+	err = h.eventService.DeleteEvent(c.Request.Context(), id)
+	if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.Status(http.StatusOK)
+}

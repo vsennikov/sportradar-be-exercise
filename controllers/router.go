@@ -53,6 +53,8 @@ func(r *Router) InitServer() *gin.Engine{
 			events.POST("", r.eventHandler.HandleCreateEvent)
 			events.GET("/:id", r.eventHandler.HandleGetEventByID)
 			events.GET("", r.eventHandler.HandleListEvents)
+			events.PATCH("/:id", r.eventHandler.HandleUpdateEvent)
+			events.DELETE("/:id", r.eventHandler.HandleDeleteEvent)
 		}
 	}
 	return router
