@@ -24,13 +24,13 @@ type EventServiceInterface interface {
 }
 
 type EventService struct {
-	repository EventRepositoryInterface
-	defaultPage int
+	repository   EventRepositoryInterface
+	defaultPage  int
 	defaultLimit int
 }
 
 func NewEventService(repository EventRepositoryInterface, defaultPage, defaultLimit int) *EventService {
-    return &EventService{repository: repository, defaultPage: defaultPage, defaultLimit: defaultLimit}
+	return &EventService{repository: repository, defaultPage: defaultPage, defaultLimit: defaultLimit}
 }
 
 func (s *EventService) GetEventByID(ctx context.Context, id int) (*Event, error) {
@@ -48,14 +48,7 @@ func (s *EventService) CreateEvent(ctx context.Context, req EventCreateRequest) 
 	if req.EventDatetime.Before(time.Now()) {
 		return 0, fmt.Errorf("cannot create an event in the past")
 	}
-	params := CreateEventParams{
-		EventDatetime: req.EventDatetime,
-		Description:   req.Description,
-		SportID:       req.SportID,
-		VenueID:       req.VenueID,
-		HomeTeamID:    req.HomeTeamID,
-		AwayTeamID:    req.AwayTeamID,
-	}
+	params := CreateEventParams(req)
 	newID, err := s.repository.CreateEvent(ctx, params)
 	if err != nil {
 		return 0, fmt.Errorf("failed to create event: %w", err)

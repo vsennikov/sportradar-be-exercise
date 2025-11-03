@@ -29,14 +29,20 @@ func buildApp(cfg config.Config) (*gin.Engine, *sqlx.DB, error) {
 	}
 	log.Println("Initializing dependencies...")
 	eventRepository := infrastructure.NewEventRepository(db)
+	sportRepository := infrastructure.NewSportRepository(db)
 	eventService := services.NewEventService(
 		eventRepository,
 		cfg.DefaultPage,
 		cfg.DefaultLimit,
 	)
+	sportService := services.NewSportService(
+		sportRepository,
+		eventRepository,
+	)
+	sportHandler := controllers.NewSportHandler(sportService)
 	eventHandler := controllers.NewEventHandler(eventService)
 	log.Println("Setting up routes...")
-	router := controllers.NewRouter(eventHandler)
+	router := controllers.NewRouter(eventHandler, sportHandler)
 	server := router.InitServer()
 	return server, db, nil
 }

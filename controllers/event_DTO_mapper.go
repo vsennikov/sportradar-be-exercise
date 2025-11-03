@@ -40,3 +40,10 @@ func toDTOEvent(event services.Event) EventDTO{
 		},
 	}
 }
+
+func toDTOSport(sport services.Sport) sportDTO {
+	return sportDTO{
+		ID: sport.ID,
+		Name: sport.Name,
+	}
+}

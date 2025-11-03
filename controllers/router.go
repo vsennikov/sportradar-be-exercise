@@ -6,10 +6,11 @@ import (
 
 type Router struct {
 	eventHandler *EventHandler
+	SportHandler *SportHandler
 }
 
-func NewRouter(e *EventHandler) *Router {
-	return &Router{eventHandler: e}
+func NewRouter(e *EventHandler, s *SportHandler) *Router {
+	return &Router{eventHandler: e, SportHandler: s}
 }
 
 func(r *Router) InitServer() *gin.Engine{
@@ -21,6 +22,14 @@ func(r *Router) InitServer() *gin.Engine{
 	})
 	api := router.Group("/api/v1")
 	{
+		sports := api.Group("sports")
+		{
+			sports.POST("", r.SportHandler.HandleCreateSport)
+			sports.GET("/:id", r.SportHandler.HandleGetSportByID)
+			sports.GET("", r.SportHandler.HandleListSports)
+			sports.DELETE("/:id", r.SportHandler.HandleDeleteSport)
+			sports.PUT("/:id", r.SportHandler.HandleUpdateSport)
+		}
 		events := api.Group("/events")
 		{
 			events.POST("", r.eventHandler.HandleCreateEvent)
