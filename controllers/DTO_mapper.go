@@ -56,3 +56,11 @@ func toDTOVenue(venue services.Venue) venueDTO {
 		CountryCode: venue.CountryCode,
 	}
 }
+
+func toDTOTeam(team services.Team) teamDTO {
+	return teamDTO{
+		ID: team.ID,
+		Name: team.Name,
+		City: team.City,
+	}
+}

@@ -35,9 +35,8 @@ func (s *VenueService) CreateVenue(ctx context.Context, req CreateVenueRequest) 
 		return 0, fmt.Errorf("venue name must be at least 3 characters long")
 	} else if len (req.City) < 3 {
 		return 0, fmt.Errorf("venue city name must be at least 3 characters long")
-
 	} else if len (req.CountryCode) != 2 {
-		return 0, fmt.Errorf("venue city_code must be 2 characters long")
+		return 0, fmt.Errorf("venue city code must be 2 characters long")
 	}
 	params := VenueRequest(req)
 	newID, err := s.venueRepository.CreateVenue(ctx, params)
@@ -69,12 +68,21 @@ func (s *VenueService) UpdateVenue(ctx context.Context, id int, req UpdateVenueR
 		return fmt.Errorf("database error: %w", err)
 	}
 	if req.Name != nil {
+		if len(*req.Name) < 3 {
+			return fmt.Errorf("venue name must be at least 3 characters long")
+		}
 		existingVenue.Name = *req.Name
 	}
 	if req.City != nil {
+		if len(*req.City) < 3 {
+			return fmt.Errorf("venue city name must be at least 3 characters long")
+		}
 		existingVenue.City = *req.City
 	}
 	if req.CountryCode != nil {
+			if len(*req.City) != 2 {
+			return fmt.Errorf("venue city code must be 2 characters long")
+		}
 		existingVenue.CountryCode = *req.CountryCode
 	}
 	err = s.venueRepository.UpdateVenue(ctx, *existingVenue)

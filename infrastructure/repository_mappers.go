@@ -71,3 +71,11 @@ func toServiceVenue(db venueDBModel) services.Venue {
 		CountryCode: db.CountryCode,
 	}
 }
+
+func toServiceTeam(db teamDBModel) services.Team {
+	return services.Team{
+		ID: db.ID,
+		Name: db.Name,
+		City: db.City,
+	}
+}

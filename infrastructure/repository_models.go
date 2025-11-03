@@ -41,3 +41,10 @@ type venueDBModel struct {
 	City 		string `db:"city"`
 	CountryCode string `db:"country_code"`
 }
+
+type teamDBModel struct {
+	ID      int    `db:"id"`
+	Name    string `db:"name"`
+	City    string `db:"city"`
+	SportID int    `db:"_sport_id"`
+}

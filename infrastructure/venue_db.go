@@ -40,6 +40,7 @@ func (v *VenueRepository) GetVenueById(ctx context.Context, id int) (*services.V
 func (v *VenueRepository) ListVenues(ctx context.Context) ([]services.Venue, error) {
 	query := "SELECT id, name, city, country_code FROM venues ORDER BY name ASC"
 	var dbModel []venueDBModel
+	
 	if err := v.db.SelectContext(ctx, &dbModel, query); err != nil {
 		return nil, err
 	}

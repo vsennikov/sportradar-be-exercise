@@ -31,6 +31,7 @@ func buildApp(cfg config.Config) (*gin.Engine, *sqlx.DB, error) {
 	eventRepository := infrastructure.NewEventRepository(db)
 	sportRepository := infrastructure.NewSportRepository(db)
 	venueRepository := infrastructure.NewVenueRepository(db)
+	teamRepository := infrastructure.NewTeamRepository(db)
 	eventService := services.NewEventService(
 		eventRepository,
 		cfg.DefaultPage,
@@ -44,11 +45,16 @@ func buildApp(cfg config.Config) (*gin.Engine, *sqlx.DB, error) {
 		venueRepository,
 		eventRepository,
 	)
+	teamService := services.NewTeamService(
+		teamRepository,
+		eventRepository,
+	)
 	sportHandler := controllers.NewSportHandler(sportService)
 	eventHandler := controllers.NewEventHandler(eventService)
 	venueHandler := controllers.NewVenueHandler(venueService)
+	teamHandler := controllers.NewTeamHandler(teamService)
 	log.Println("Setting up routes...")
-	router := controllers.NewRouter(eventHandler, sportHandler, venueHandler)
+	router := controllers.NewRouter(eventHandler, sportHandler, venueHandler, teamHandler)
 	server := router.InitServer()
 	return server, db, nil
 }

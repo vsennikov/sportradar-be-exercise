@@ -130,3 +130,13 @@ func (r *EventRepository) CountEventsByVenueId(ctx context.Context, venueID int)
 	}
 	return total, nil
 }
+
+func (r *EventRepository) CountEventsByTeamID(ctx context.Context, teamID int) (int, error) {
+	query := "SELECT COUNT(*) FROM events WHERE _home_team_id = $1 OR _away_team_id = $1"
+	var total int
+
+	if err := r.db.GetContext(ctx, &total, query, teamID); err != nil {
+		return 0, err
+	}
+	return total, nil
+}

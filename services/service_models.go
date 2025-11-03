@@ -93,3 +93,21 @@ type UpdateVenueRequest struct {
 	City        *string `json:"city"`
 	CountryCode *string `json:"country_code"`
 }
+
+type TeamRequest struct {
+	Name    string
+	City    string
+	SportID int
+}
+
+type CreateTeamRequest struct {
+	Name    string `json:"name" binding:"required"`
+	City    string `json:"city" binding:"required"`
+	SportID int    `json:"sport_id" binding:"required"`
+}
+
+type UpdateTeamRequest struct {
+	Name    *string `json:"name"`
+	City    *string `json:"city"`
+	SportID *int    `json:"sport_id"`
+}

@@ -16,6 +16,7 @@ type EventRepositoryInterface interface {
 	ListEvents(ctx context.Context, params ListEventsParams) ([]Event, error)
 	CountEventsBySportID(ctx context.Context, sportID int) (int, error)
 	CountEventsByVenueId(ctx context.Context, venueID int) (int, error)
+	CountEventsByTeamID(ctx context.Context, teamID int) (int, error)
 }
 
 type EventServiceInterface interface {

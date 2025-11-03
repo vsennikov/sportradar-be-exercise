@@ -8,10 +8,11 @@ type Router struct {
 	eventHandler *EventHandler
 	sportHandler *SportHandler
 	venueHandler *VenueHandler
+	teamHandler *TeamHandler
 }
 
-func NewRouter(e *EventHandler, s *SportHandler, v *VenueHandler) *Router {
-	return &Router{eventHandler: e, sportHandler: s, venueHandler: v}
+func NewRouter(e *EventHandler, s *SportHandler, v *VenueHandler, t *TeamHandler) *Router {
+	return &Router{eventHandler: e, sportHandler: s, venueHandler: v, teamHandler: t}
 }
 
 func(r *Router) InitServer() *gin.Engine{
@@ -23,6 +24,14 @@ func(r *Router) InitServer() *gin.Engine{
 	})
 	api := router.Group("/api/v1")
 	{
+		teams := api.Group("teams")
+		{
+			teams.POST("", r.teamHandler.HandleCreateTeam)
+			teams.GET("/:id", r.teamHandler.HandleGetTeamByID)
+			teams.GET("", r.teamHandler.HandleListTeams)
+			teams.PATCH("/:id", r.teamHandler.HandleUpdateTeam)
+			teams.DELETE("/:id", r.teamHandler.HandleDeleteTeam)
+		}
 		venues := api.Group("venues")
 		{
 			venues.POST("", r.venueHandler.HandleCreateVenue)
