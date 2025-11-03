@@ -6,11 +6,12 @@ import (
 
 type Router struct {
 	eventHandler *EventHandler
-	SportHandler *SportHandler
+	sportHandler *SportHandler
+	venueHandler *VenueHandler
 }
 
-func NewRouter(e *EventHandler, s *SportHandler) *Router {
-	return &Router{eventHandler: e, SportHandler: s}
+func NewRouter(e *EventHandler, s *SportHandler, v *VenueHandler) *Router {
+	return &Router{eventHandler: e, sportHandler: s, venueHandler: v}
 }
 
 func(r *Router) InitServer() *gin.Engine{
@@ -22,13 +23,21 @@ func(r *Router) InitServer() *gin.Engine{
 	})
 	api := router.Group("/api/v1")
 	{
+		venues := api.Group("venues")
+		{
+			venues.POST("", r.venueHandler.HandleCreateVenue)
+			venues.GET("/:id", r.venueHandler.HandleGetVenueByID)
+			venues.GET("", r.venueHandler.HandleListVenues)
+			venues.PATCH("/:id", r.venueHandler.HandleUpdateVenue)
+			venues.DELETE("/:id", r.venueHandler.HandleDeleteVenue)
+		}
 		sports := api.Group("sports")
 		{
-			sports.POST("", r.SportHandler.HandleCreateSport)
-			sports.GET("/:id", r.SportHandler.HandleGetSportByID)
-			sports.GET("", r.SportHandler.HandleListSports)
-			sports.DELETE("/:id", r.SportHandler.HandleDeleteSport)
-			sports.PUT("/:id", r.SportHandler.HandleUpdateSport)
+			sports.POST("", r.sportHandler.HandleCreateSport)
+			sports.GET("/:id", r.sportHandler.HandleGetSportByID)
+			sports.GET("", r.sportHandler.HandleListSports)
+			sports.DELETE("/:id", r.sportHandler.HandleDeleteSport)
+			sports.PUT("/:id", r.sportHandler.HandleUpdateSport)
 		}
 		events := api.Group("/events")
 		{

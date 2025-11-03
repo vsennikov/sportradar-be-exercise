@@ -8,60 +8,61 @@ import (
 	"github.com/vsennikov/sportradar-be-exercise/services"
 )
 
-type SportHandler struct {
-	sportService services.SportServiceInterface
+type VenueHandler struct {
+	venueService services.VenueServiceInterface
 }
 
-func NewSportHandler(s services.SportServiceInterface) *SportHandler {
-	return &SportHandler{sportService: s}
+func NewVenueHandler(s services.VenueServiceInterface) *VenueHandler {
+	return &VenueHandler{venueService: s}
 }
 
-func (h *SportHandler) HandleCreateSport(c *gin.Context) {
-	var req services.SportRequest
-	
+func (h *VenueHandler) HandleCreateVenue(c *gin.Context) {
+	var req services.CreateVenueRequest
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	newID, err := h.sportService.CreateSport(c.Request.Context(), req)
+	newID, err := h.venueService.CreateVenue(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusCreated, gin.H{"id": newID})
 }
 
-func (h *SportHandler) HandleGetSportByID(c *gin.Context) {
+func (h *VenueHandler) HandleGetVenueByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID format"})
 		return
 	}
-	sport, err := h.sportService.GetSportByID(c.Request.Context(), id)
+	venue, err := h.venueService.GetVenueByID(c.Request.Context(), id)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, toDTOSport(*sport))
+
+	c.JSON(http.StatusOK, toDTOVenue(*venue))
 }
 
-func (h *SportHandler) HandleListSports(c *gin.Context) {
-	sports, err := h.sportService.ListSports(c.Request.Context())
+func (h *VenueHandler) HandleListVenues(c *gin.Context) {
+	venues, err := h.venueService.ListVenues(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	sportsDTO := make([]sportDTO, 0, len(sports))
-	for _, sport := range sports {
-		sportsDTO = append(sportsDTO,toDTOSport(sport))
+	venueDTOs := make([]venueDTO, 0, len(venues))
+	for _, v := range venues {
+		venueDTOs = append(venueDTOs, toDTOVenue(v))
 	}
-
-	c.JSON(http.StatusOK, sportsDTO)
+	c.JSON(http.StatusOK, venueDTOs)
 }
 
-func (h *SportHandler) HandleUpdateSport(c *gin.Context) {
-	var req services.SportRequest
+func (h *VenueHandler) HandleUpdateVenue(c *gin.Context) {
+	var req services.UpdateVenueRequest
 
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -73,7 +74,7 @@ func (h *SportHandler) HandleUpdateSport(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = h.sportService.UpdateSport(c.Request.Context(), id, req)
+	err = h.venueService.UpdateVenue(c.Request.Context(), id, req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -81,19 +82,17 @@ func (h *SportHandler) HandleUpdateSport(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (h *SportHandler) HandleDeleteSport(c *gin.Context) {
+func (h *VenueHandler) HandleDeleteVenue(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID format"})
 		return
 	}
-
-	err = h.sportService.DeleteSport(c.Request.Context(), id)
+	err = h.venueService.DeleteVenue(c.Request.Context(), id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.Status(http.StatusOK)
 }

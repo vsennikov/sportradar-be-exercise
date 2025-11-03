@@ -62,3 +62,12 @@ func toServiceSport(db sportDBModel) services.Sport {
 		Name: db.Name,
 	}
 }
+
+func toServiceVenue(db venueDBModel) services.Venue {
+	return services.Venue{
+		ID: db.ID,
+		Name: db.Name,
+		City: db.City,
+		CountryCode: db.CountryCode,
+	}
+}

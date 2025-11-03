@@ -13,7 +13,7 @@ type eventDBModel struct {
 	HomeScore     sql.NullInt64  `db:"home_score"`
 	AwayScore     sql.NullInt64  `db:"away_score"`
 
-	SportID   int    `db:"sport.id"`
+	SportID	int    `db:"sport.id"`
 	SportName string `db:"sport.name"`
 
 	VenueID          sql.NullInt64  `db:"venue.id"`
@@ -33,4 +33,11 @@ type eventDBModel struct {
 type sportDBModel struct {
 	ID	 int	`db:"id"`
 	Name string `db:"name"`
+}
+
+type venueDBModel struct {
+	ID	 		int	`db:"id"`
+	Name 		string `db:"name"`
+	City 		string `db:"city"`
+	CountryCode string `db:"country_code"`
 }

@@ -47,3 +47,12 @@ func toDTOSport(sport services.Sport) sportDTO {
 		Name: sport.Name,
 	}
 }
+
+func toDTOVenue(venue services.Venue) venueDTO {
+	return venueDTO{
+		ID: venue.ID,
+		Name: venue.Name,
+		City: venue.City,
+		CountryCode: venue.CountryCode,
+	}
+}

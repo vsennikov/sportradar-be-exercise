@@ -75,3 +75,21 @@ type EventCreateRequest struct {
 type SportRequest struct {
 	Name string `json:"name" binding:"required"`
 }
+
+type VenueRequest struct {
+	Name string
+	City string
+	CountryCode string
+}
+
+type CreateVenueRequest struct {
+	Name        string `json:"name" binding:"required"`
+	City        string `json:"city" binding:"required"`
+	CountryCode string `json:"country_code" binding:"required"`
+}
+
+type UpdateVenueRequest struct {
+	Name        *string `json:"name"`
+	City        *string `json:"city"`
+	CountryCode *string `json:"country_code"`
+}
