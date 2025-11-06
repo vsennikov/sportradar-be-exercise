@@ -80,8 +80,8 @@ func (s *VenueService) UpdateVenue(ctx context.Context, id int, req UpdateVenueR
 		existingVenue.City = *req.City
 	}
 	if req.CountryCode != nil {
-			if len(*req.City) != 2 {
-			return fmt.Errorf("venue city code must be 2 characters long")
+		if len(*req.CountryCode) != 2 {
+			return fmt.Errorf("venue country code must be 2 characters long")
 		}
 		existingVenue.CountryCode = *req.CountryCode
 	}

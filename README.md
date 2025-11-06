@@ -46,6 +46,36 @@ This project includes a Postman collection to make testing the API easy.
 
 ---
 
+## 🧪 Running Tests
+
+This project includes comprehensive unit and integration tests.
+
+### Quick Start
+
+```bash
+# Run all tests (unit + integration)
+go test ./...
+
+# Run only unit tests (skip integration tests)
+go test -short ./...
+
+# Run tests with coverage
+go test -cover ./...
+```
+
+### Test Documentation
+
+For detailed information about the test suite, including:
+- Test structure and organization
+- How to set up the test environment
+- Writing new tests
+- Best practices
+- Troubleshooting
+
+See [TESTING.md](./TESTING.md) for complete testing documentation.
+
+---
+
 ## API Endpoints
 
 All endpoints are prefixed with `/api/v1`.
