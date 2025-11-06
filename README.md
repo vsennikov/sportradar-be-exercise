@@ -48,7 +48,7 @@ This project includes a Postman collection to make testing the API easy.
 
 ## 🧪 Running Tests
 
-This project includes comprehensive unit and integration tests.
+This project includes unit and integration tests.
 
 ### Quick Start
 
