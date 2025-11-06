@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+</head>
+<body>
+    
+    <main class="container" id="password-prompt" style="max-width: 500px; margin-top: 10vh;">
+        <article>
+            <hgroup>
+                <h1>Admin Panel</h1>
+                <h2>Please enter the password to continue</h2>
+            </hgroup>
+            
+            <form id="password-form">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+                <div id="password-error" style="color: var(--pico-del-color); margin-top: 10px;"></div>
+            </form>
+        </article>
+    </main>
+
+    <div id="app-container" style="display: none;">
+        <main class="container">
+            <nav>
+                <ul>
+                    <li><strong>Sportradar Admin</strong></li>
+                </ul>
+                <ul>
+                    <li><a href="/">Back to Calendar</a></li>
+                </ul>
+            </nav>
+
+            <nav>
+                <ul>
+                    <li><a href="#" aria-current="page">Events</a></li>
+                    <li><a href="#" class="secondary" disabled>Sports</a></li>
+                    <li><a href="#" class="secondary" disabled>Teams</a></li>
+                    <li><a href="#" class="secondary" disabled>Venues</a></li>
+                </ul>
+            </nav>
+
+            <section id="events-panel">
+                <h2>Create New Event</h2>
+                
+                <form id="create-event-form">
+                    <label for="datetime">
+                        Date & Time
+                        <input type="datetime-local" id="datetime" name="datetime" required>
+                    </label>
+
+                    <label for="sport">Sport</label>
+                    <select id="sport" name="sport" required>
+                        <option value="" disabled selected>Loading sports...</option>
+                    </select>
+
+                    <div class="grid">
+                        <label for="home_team">Home Team</label>
+                        <select id="home_team" name="home_team" required>
+                            <option value="" disabled selected>Loading teams...</option>
+                        </select>
+
+                        <label for="away_team">Away Team</label>
+                        <select id="away_team" name="away_team" required>
+                            <option value="" disabled selected>Loading teams...</option>
+                        </select>
+                    </div>
+
+                    <label for="venue">Venue (Optional)</label>
+                    <select id="venue" name="venue">
+                        <option value="">Loading venues...</option>
+                    </select>
+
+                    <label for="description">Description (Optional)</label>
+                    <textarea id="description" name="description"></textarea>
+                    
+                    <button type="submit">Create Event</button>
+                </form>
+                
+                <div id="form-message" style="margin-top: 20px;"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="/static/admin.js"></script>
+</body>
+</html>
