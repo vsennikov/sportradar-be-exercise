@@ -1,0 +1,102 @@
+﻿Which parts of your solution were written by you & 
+Which parts were generated or influenced by AI and how have you evaluated them
+================================================================================
+
+Regarding the use of AI, I find it a bit difficult to separate which parts 
+were written by me versus by AI, so I will combine the first two questions 
+into one.
+
+I knew exactly what I wanted to use for the backend: Go as the programming 
+language I know, gin-gonic as a framework I have worked with, Docker for 
+universal project assembly and PostgreSQL.
+
+I had a vision that the data for Events needed to be separated into distinct 
+tables. This would help with scalability and in the future make it easier to 
+modify these tables and come up with new use cases. (For example, in one of 
+the frontend versions, there was an option to add a new team and specify its 
+sport, but I didn't fully understand the code written by the AI and decided 
+to focus on higher-priority items).
+
+During the database architecture design phase, I consulted with the AI. I 
+described my vision and asked how the architecture could be improved. For 
+example, I initially thought about passing the score as a single text field, 
+but the AI suggested a better option with two separate integer fields. This 
+would facilitate real-time score updates, make parsing values on the frontend 
+or in other parts of the application easier and allow filtering events by 
+score.
+
+The AI also helped create an efficient SQL query with JOINs to retrieve the 
+Event entity. Previously, I used GORM in my projects. Although I knew SQL 
+syntax, it was the AI that helped me build the efficient query. The AI 
+explained the "N+1" problem to me, why JOINs are necessary and how to 
+correctly map the retrieved data into a struct.
+
+I gave the AI tasks to write boilerplate code for other parts (e.g., sport_db, 
+venue_service, etc.). I would ask it to write several functions at once and 
+then review them to ensure they met my expectations. I also manually tested 
+all the generated code to be certain everything worked as required.
+
+The AI also wrote the unit and integration tests, as I had not done this 
+before. It was interesting to learn how mock works and how to specify the 
+expected results.
+
+The biggest challenge for me regarding AI usage was the frontend. I am 
+familiar with the syntax of JS, HTML and CSS, but I had never built a web 
+application before. Therefore, I knew nothing about what the code should look 
+like or what the correct practices were. At first, I gave the AI instructions 
+for a simple frontend to verify that the backend was working correctly and 
+that I had at least some page displaying data.
+
+Next, I over-complicated things a bit by deciding to add an admin page, where 
+it is possible to add, modify and delete events, sports, teams and stadiums. 
+This was a good idea, but it resulted in a very "crude" implementation using 
+a hardcoded password for page access. I considered implementing token-based 
+authorization but decided it would significantly complicate the code and I 
+still lacked a sufficient understanding of the frontend.
+
+Therefore, I made the decision to remove that page and leave just the option 
+to add events, but with the ability to select options from a dropdown list. 
+After this, I asked the AI to explain everything I didn't understand (for 
+example, how Promise.all works).
+
+Next, I asked the AI about best practices for code distribution and I also 
+independently searched for and read information about it on the Internet. 
+Based on this new information, I asked the AI to rewrite the JS code to 
+extract repetitive functions into a shared module, split the code into API 
+requests, rendering functions and a main file to combine it all.
+
+Why you made certain technical decisions
+================================================================================
+
+- Why a 3-layer architecture? 
+  To clearly separate responsibilities (SRP) and make the code testable and 
+  scalable.
+
+- Why sqlx and not GORM? 
+  To demonstrate proficiency in writing efficient, "clean" SQL queries (JOIN, 
+  RETURNING id), as required by the exercise.
+
+- Why context.Context everywhere? 
+  To make the server robust. It allows us to automatically cancel SQL queries 
+  if a user closes their tab, which prevents "zombie queries".
+
+- Why implement CRUD for sports, teams and venues? 
+  Primarily to demonstrate scalability. I initially wanted to add the ability 
+  on the frontend to create new teams, etc., but had to abandon this due to 
+  lack of time. This capability remains available via the API.
+
+One improvement you would make if you had more time
+================================================================================
+
+Honestly, there is a lot I would like to add to the project. For example, I'd 
+dedicate more time to the frontend, creating an admin panel with user 
+validation (i.e., create a new DB for users, check entered credentials and 
+return a token). It's also a shame I didn't write unit tests earlier, it would 
+have been interesting to try TDD.
+
+But the main thing I would do if I had more time is to create a custom error 
+handler. Currently, if a user tries to fetch an event with a non-existent ID, 
+we return an SQL error, which is not good practice. I wanted to implement this 
+quickly via AI, but since I thought of it late, the AI modified a very large 
+part of the code and I didn't have enough time to validate and fix everything, 
+nor did I have enough time to write it myself.
