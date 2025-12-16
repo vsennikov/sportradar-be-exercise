@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/vsennikov/sportradar-be-exercise/config"
+	"github.com/vsennikov/sports-event-calendar/config"
 )
 
 func NewConnection(cfg config.Config) (*sqlx.DB, error) {

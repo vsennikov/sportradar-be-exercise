@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/vsennikov/sportradar-be-exercise/config"
+	"github.com/vsennikov/sports-event-calendar/config"
 )
 
 func main() {

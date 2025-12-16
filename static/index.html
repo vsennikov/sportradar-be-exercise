@@ -1,67 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sportradar Calendar</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sports Event Calendar</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
 </head>
+
 <body>
-    
-    <main class="container">
-        
-        <nav>
-            <ul>
-                <li><strong>Sportradar Calendar</strong></li>
-            </ul>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Sports</a></li>
-                <li><a href="#">Teams</a></li>
+
+	<main class="container">
+
+		<nav>
+			<ul>
+				<li><strong>Sports Event Calendar</strong></li>
+			</ul>
+			<ul>
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Sports</a></li>
+				<li><a href="#">Teams</a></li>
 				<li><a href="/static/create-event.html" role="button" class="secondary">Create Event</a></li>
-            </ul>
-        </nav>
+			</ul>
+		</nav>
 
-        <h1>Events</h1>
+		<h1>Events</h1>
 
-        <form id="filter-form">
-            <div class="grid">
-                <div>
-                    <label for="date-filter">Date (from)</label>
-                    <input type="date" id="date-filter" name="date-filter">
-                </div>
-                <div>
-                    <label for="sport-filter">Sport</label>
-                    <select id="sport-filter" name="sport-filter">
-                        <option value="">Loading sports...</option>
-                    </select>
-                </div>
-            </div>
-            <button type="submit" id="filter-submit">Filter</button>
-            <button type="button" id="filter-clear" class="secondary">Clear Filters</button>
-        </form>
+		<form id="filter-form">
+			<div class="grid">
+				<div>
+					<label for="date-filter">Date (from)</label>
+					<input type="date" id="date-filter" name="date-filter">
+				</div>
+				<div>
+					<label for="sport-filter">Sport</label>
+					<select id="sport-filter" name="sport-filter">
+						<option value="">Loading sports...</option>
+					</select>
+				</div>
+			</div>
+			<button type="submit" id="filter-submit">Filter</button>
+			<button type="button" id="filter-clear" class="secondary">Clear Filters</button>
+		</form>
 
-        <figure style="overflow: auto;">
-            <table id="event-table">
-                <thead>
-                    <tr>
-                        <th>Sport</th>
-                        <th>Match</th>
-                        <th>Score</th>
-                        <th>Venue</th>
-                        <th>Date & Time</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody id="event-list-body">
-                    <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
-                </tbody>
-            </table>
-        </figure>
+		<figure style="overflow: auto;">
+			<table id="event-table">
+				<thead>
+					<tr>
+						<th>Sport</th>
+						<th>Match</th>
+						<th>Score</th>
+						<th>Venue</th>
+						<th>Date & Time</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody id="event-list-body">
+					<tr>
+						<td colspan="6" style="text-align: center;">Loading...</td>
+					</tr>
+				</tbody>
+			</table>
+		</figure>
 
-        <div id="pagination-controls" style="text-align: center;">
-            </div>
+		<div id="pagination-controls" style="text-align: center;">
+		</div>
 
-    </main> <script type="module" src="/static/js/app/main.js"></script>
+	</main>
+	<script type="module" src="/static/js/app/main.js"></script>
 </body>
+
 </html>

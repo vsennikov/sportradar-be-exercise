@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/vsennikov/sportradar-be-exercise/services"
+	"github.com/vsennikov/sports-event-calendar/services"
 )
 
 type EventHandler struct {

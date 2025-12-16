@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/vsennikov/sportradar-be-exercise/services"
+	"github.com/vsennikov/sports-event-calendar/services"
 )
 
 type TeamRepository struct {

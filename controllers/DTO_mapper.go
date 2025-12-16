@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/vsennikov/sportradar-be-exercise/services"
+import "github.com/vsennikov/sports-event-calendar/services"
 
 func toDTOEvent(event services.Event) EventDTO{
 	var venue *venueDTO

@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 
-	"github.com/vsennikov/sportradar-be-exercise/services"
+	"github.com/vsennikov/sports-event-calendar/services"
 )
 
 func toServiceEvent(db eventDBModel) services.Event {

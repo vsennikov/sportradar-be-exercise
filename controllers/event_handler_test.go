@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/vsennikov/sportradar-be-exercise/services"
+	"github.com/vsennikov/sports-event-calendar/services"
 )
 
 // MockEventService is a mock implementation of EventServiceInterface

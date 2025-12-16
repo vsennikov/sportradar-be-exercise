@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/vsennikov/sportradar-be-exercise/config"
+	"github.com/vsennikov/sports-event-calendar/config"
 )
 
 // SetupTestDB creates a test database connection
@@ -19,7 +19,7 @@ func SetupTestDB(t *testing.T) *sqlx.DB {
 		DBPort:     getEnvOrDefault("TEST_DB_PORT", "5432"),
 		DBUser:     getEnvOrDefault("TEST_DB_USER", "postgres"),
 		DBPassword: getEnvOrDefault("TEST_DB_PASSWORD", "postgres"),
-		DBName:     getEnvOrDefault("TEST_DB_NAME", "sportradar_test"),
+		DBName:     getEnvOrDefault("TEST_DB_NAME", "sports_event_calendar_test"),
 	}
 
 	db, err := NewConnection(cfg)
@@ -36,44 +36,44 @@ func CleanupTestDB(t *testing.T, db *sqlx.DB) {
 	t.Helper()
 
 	ctx := context.Background()
-	
+
 	// Delete in reverse order of dependencies
 	_, err := db.ExecContext(ctx, "DELETE FROM events")
 	if err != nil {
 		t.Logf("Error cleaning up events: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "DELETE FROM teams")
 	if err != nil {
 		t.Logf("Error cleaning up teams: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "DELETE FROM venues")
 	if err != nil {
 		t.Logf("Error cleaning up venues: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "DELETE FROM sports")
 	if err != nil {
 		t.Logf("Error cleaning up sports: %v", err)
 	}
-	
+
 	// Reset sequences
 	_, err = db.ExecContext(ctx, "ALTER SEQUENCE events_id_seq RESTART WITH 1")
 	if err != nil {
 		t.Logf("Error resetting events sequence: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "ALTER SEQUENCE teams_id_seq RESTART WITH 1")
 	if err != nil {
 		t.Logf("Error resetting teams sequence: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "ALTER SEQUENCE venues_id_seq RESTART WITH 1")
 	if err != nil {
 		t.Logf("Error resetting venues sequence: %v", err)
 	}
-	
+
 	_, err = db.ExecContext(ctx, "ALTER SEQUENCE sports_id_seq RESTART WITH 1")
 	if err != nil {
 		t.Logf("Error resetting sports sequence: %v", err)
@@ -85,7 +85,7 @@ func InitTestSchema(t *testing.T, db *sqlx.DB) {
 	t.Helper()
 
 	ctx := context.Background()
-	
+
 	schema := `
 	SET TIMEZONE='UTC';
 
@@ -140,4 +140,3 @@ func getEnvOrDefault(key, defaultValue string) string {
 	}
 	return defaultValue
 }
-

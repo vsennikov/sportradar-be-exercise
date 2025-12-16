@@ -1,6 +1,6 @@
 # Testing Documentation
 
-This document provides information about the test suite for the Sportradar Backend Exercise project.
+This document provides information about the test suite for the Sports Event Calendar project.
 
 ## Table of Contents
 

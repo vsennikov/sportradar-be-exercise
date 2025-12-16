@@ -1,4 +1,4 @@
-module github.com/vsennikov/sportradar-be-exercise
+module github.com/vsennikov/sports-event-calendar
 
 go 1.24.0
 

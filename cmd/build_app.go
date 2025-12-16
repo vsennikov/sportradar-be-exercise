@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"github.com/vsennikov/sportradar-be-exercise/config"
-	"github.com/vsennikov/sportradar-be-exercise/controllers"
-	"github.com/vsennikov/sportradar-be-exercise/infrastructure"
-	"github.com/vsennikov/sportradar-be-exercise/services"
+	"github.com/vsennikov/sports-event-calendar/config"
+	"github.com/vsennikov/sports-event-calendar/controllers"
+	"github.com/vsennikov/sports-event-calendar/infrastructure"
+	"github.com/vsennikov/sports-event-calendar/services"
 )
 
 func cleanupFunc (db *sqlx.DB) {

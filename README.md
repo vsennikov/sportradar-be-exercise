@@ -1,4 +1,4 @@
-# Sportradar Coding Exercise
+# Sports Event Calendar
 
 This project is a sports event calendar API built with Go, Gin, PostgreSQL, and Docker. It includes a full backend with CRUD operations for events, sports, teams, and venues. It also features a simple frontend built with JavaScript and the Pico.css framework.
 
@@ -9,7 +9,6 @@ This project is a sports event calendar API built with Go, Gin, PostgreSQL, and 
 - [Running Tests](#-running-tests)
 - [API Endpoints](#api-endpoints)
 - [Database Design](#database-design)
-- [Assumptions & Design Decisions](#-assumptions--design-decisions)
 
 ---
 
@@ -21,8 +20,8 @@ This project is a sports event calendar API built with Go, Gin, PostgreSQL, and 
 
 2.  **Clone the repository:**
     ```bash
-    git clone git@github.com:vsennikov/sportradar-be-exercise.git
-    cd sportradar-be-exercise
+    git clone git@github.com:vsennikov/sports-event-calendar.git
+    cd sports-event-calendar
     ```
 
 3.  **Create the environment file:**
@@ -135,21 +134,3 @@ The `GET /events` endpoint supports the following query parameters:
 Here is the Entity-Relationship Diagram (ERD) for the project:
 
 ![Database ERD](./erd.drawio.png)
-
----
-
-## 🏛️ Assumptions & Design Decisions
-
-This project was built with scalable architecture in mind, based on the following key decisions:
-
-* **3-Layer Architecture:** The application is strictly separated into three layers: `Handlers` (Controllers), `Services` (Business Logic), and `Repositories` (Data Access). This follows the Single Responsibility Principle.
-* **Dependency Inversion:** Interfaces (e.g., `EventService`, `EventRepository`) are defined at the `Service` layer. This separates business logic from the specific database or API implementation.
-* **3-Model Separation:** To ensure clean separation, three types of models are used:
-    1.  **DTOs:** For JSON binding/responses (e.g., `EventDTO`).
-    2.  **Service Models:** "Clean" structs for business logic (e.g., `Event`).
-    3.  **DB Models:** "Flat" structs for `sqlx` mapping (e.g., `eventDB`).
-* **Database Strategy:**
-    * **`sqlx` over ORM:** `sqlx` was chosen over a full ORM (like GORM) to demonstrate proficiency with raw, efficient SQL, as required by the exercise.
-    * **N+1 Prevention:** The `baseEventSelectQuery` uses multiple `JOIN`s to fetch all required data in a single query, preventing the "N+1" problem.
-* **Context Propagation:** `context.Context` is passed through every layer to handle request cancellation and prevent resource leaks (e.g., "zombie queries").
-* **Simple Frontend:** The frontend is intentionally simple (plain JS and `Pico.css`) to meet the requirement without using a heavy framework (like React/Vue).
